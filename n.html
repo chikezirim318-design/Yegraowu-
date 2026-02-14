@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>For Yegraowu 💓</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Base Body & Animated Gradient */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(135deg, #ad1457, #d81b60, #880e4f);
+            background-size: 400% 400%;
+            animation: bgGradient 15s ease infinite;
+        }
+
+        /* Dark Pink Translucent Background Image */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: url('image4.jpg'); 
+            background-size: cover;
+            /* CHANGED: center 35% brings the face/model down into view */
+            background-position: center 35%; 
+            background-color: rgba(136, 14, 79, 0.7); 
+            background-blend-mode: multiply;
+            z-index: 1;
+        }
+
+        @keyframes bgGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Main Glassmorphism Card */
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 25px 20px;
+            border-radius: 25px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .card h2 { color:#ad1457; font-size:1.8em; margin-bottom:12px; }
+        .card p { color:#444; font-size:1em; margin-bottom:12px; line-height:1.4em; }
+
+        button {
+            padding: 12px 25px;
+            margin: 8px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        button.yes { background:#d63384; color:white; }
+        button.no { background:#eee; color:#333; }
+
+        /* Popup Styling */
+        .popup {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.6);
+            z-index: 100;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 20px;
+            max-width: 85%;
+            width: 360px;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.8);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+
+        .popup-content.show {
+            animation: popupFade 0.5s forwards;
+        }
+
+        @keyframes popupFade {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .popup-content h3 { color:#ad1457; font-size:1.1em; white-space: pre-wrap; line-height: 1.5; }
+
+        /* 10 Floating Names with Spin */
+        .name-float {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: bold;
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 5;
+            font-size: 18px; 
+        }
+
+        @keyframes smoothFloatAndSpin {
+            0% { transform: translate(0,0) rotate(0deg); }
+            50% { transform: translate(var(--x), var(--y)) rotate(180deg); }
+            100% { transform: translate(0,0) rotate(360deg); }
+        }
+
+        /* Hearts */
+        .heart {
+            position: absolute; bottom: -20px;
+            font-size: 20px;
+            animation: floatUp 5s linear infinite;
+            z-index: 5;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Shake Effect */
+        .shake { animation: screenShake 0.6s ease; }
+        @keyframes screenShake {
+            0%, 100% { transform: translate(0, 0); }
+            10%, 30%, 50%, 70%, 90% { transform: translate(-5px, 5px); }
+            20%, 40%, 60%, 80% { transform: translate(5px, -5px); }
+        }
+
+        .confetti-piece {
+            position: absolute; width:10px; height:10px;
+            animation: confettiFall 4s linear forwards;
+            z-index: 15;
+        }
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>My bbbbbyyyyyyy 💓</h2>
+    <p>Every moment with you is a beautiful dream.</p>
+    <p><strong>Honestly do you love me? 💕</strong></p>
+    <button class="yes" onclick="startLove()">Yes ❤️</button>
+    <button class="no" onclick="noClick()">No 🙈</button>
+</div>
+
+<div class="popup" id="popup">
+    <div class="popup-content" id="popupContent">
+        <h3 id="popupText"></h3>
+    </div>
+</div>
+
+<script>
+    const audio = new Audio("https://files.ceenaija.com/uploads/music/2020/08/CKay-love-nwantiti-ah-ah-ah.mp3");
+    audio.loop = true;
+
+    // Create 30 Hearts
+    for(let i=0; i<30; i++){
+        let heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random()*100 + "vw";
+        heart.style.animationDelay = Math.random()*5 + "s";
+        document.body.appendChild(heart);
+    }
+
+    // Create 10 Spinning Names
+    for(let i=0; i<10; i++){
+        let name = document.createElement("div");
+        name.className = "name-float";
+        name.innerText = "Yegraowu 💓";
+        name.style.top = Math.random()*100 + "vh";
+        name.style.left = Math.random()*100 + "vw";
+        
+        let xMove = (Math.random()*40 - 20) + "vw";
+        let yMove = (Math.random()*40 - 20) + "vh";
+        name.style.setProperty('--x', xMove);
+        name.style.setProperty('--y', yMove);
+        name.style.animation = `smoothFloatAndSpin ${12 + Math.random()*8}s linear infinite`;
+        document.body.appendChild(name);
+    }
+
+    function showPopup(message, duration = 4000){
+        const popup = document.getElementById("popup");
+        const content = document.getElementById("popupContent");
+        const text = document.getElementById("popupText");
+        text.innerHTML = "";
+        popup.style.display = "flex";
+        content.classList.add("show");
+        
+        typeText(message, 0);
+        
+        // Auto-close after duration
+        setTimeout(() => {
+            hidePopup();
+        }, duration);
+    }
+
+    function typeText(text, i){
+        if(i < text.length){
+            document.getElementById("popupText").innerHTML += text.charAt(i);
+            setTimeout(() => typeText(text, i+1), 35);
+        }
+    }
+
+    function hidePopup(){ 
+        const popup = document.getElementById("popup");
+        const content = document.getElementById("popupContent");
+        popup.style.display = "none"; 
+        content.classList.remove("show");
+    }
+
+    function startLove(){
+        document.body.classList.add("shake");
+        setTimeout(() => document.body.classList.remove("shake"), 600);
+
+        audio.play().catch(() => console.log("Music play blocked by browser."));
+        audio.volume = 0.5;
+
+        let msgs = [
+            "💞 Yegraowu… you are the poetry I never knew how to write.",
+            "✨ My world was in black and white until you brought the color.",
+            "🌙 I want to be the reason you look down at your phone and smile.",
+            "🌹 You're not just my love, you're my home, Yegraowu.",
+            "💖 Every 'I love you' from me is a promise for a lifetime.",
+            "😂 Dating a tech guy has consequences:\n1. Custom websites like this!!\n2. Coding my heart just for you 😂😩"
+        ];
+
+        let interval = 5200; // Time between popups
+
+        msgs.forEach((msg, i) => {
+            setTimeout(() => {
+                showPopup(msg, 4800); 
+            }, i * interval);
+        });
+
+        // Final Celebration after all messages
+        setTimeout(() => {
+            showPopup("💖 I LOVE YOU ❤️ Forever and Always, Yegraowu 💓", 6000);
+            
+            // Confetti
+            for(let i=0; i<80; i++){
+                setTimeout(() => {
+                    let c = document.createElement("div");
+                    c.className = "confetti-piece";
+                    c.style.left = Math.random()*100 + "vw";
+                    c.style.background = ["#ff4d6d","#ff758c","#ffe066"][Math.floor(Math.random()*3)];
+                    c.style.borderRadius = i % 2 === 0 ? "50%" : "0%";
+                    document.body.appendChild(c);
+                    setTimeout(() => c.remove(), 4000);
+                }, i*25);
+            }
+        }, msgs.length * interval);
+    }
+
+    function noClick(){
+        showPopup("😜 Nice try! You can't say no to Chikezirim! Press ❤️ YES!", 3500);
+    }
+</script>
+</body>
+</html>
